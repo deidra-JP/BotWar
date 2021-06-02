@@ -38,6 +38,11 @@ BotInfantry[] public botinfantrys;
 mapping (uint => address) public botToOwner;
 mapping (address => uint) ownerbotCount;
 
+modifier onlyOwnerOf(uint _botId) {
+    require(msg.sender == botToOwner[_botId]);
+    _;
+  }
+
 function _createInfantry(string memory _name, uint _dna, uint32 _order) internal {
   botinfantrys.push(BotInfantry(_name, _dna, _order, 1, 1, uint32(block.timestamp + cooldownTime)));
   uint infantryid = botinfantrys.length - 1;
@@ -58,3 +63,4 @@ function createRandomInfantry(string memory _name, uint32 _order) public {
     _createInfantry(_name, randDna, _order);
   }
 }
+
